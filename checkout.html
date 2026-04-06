@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanda Terima - NurArif Souvenir</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f6;
+            padding: 2rem;
+        }
+
+        .receipt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .receipt-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .receipt-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .receipt-header .logo {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .thank-you {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .thank-you h2 {
+            color: #2ecc71;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-number {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .order-number strong {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .receipt-section {
+            padding: 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .receipt-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .shipping-info, .billing-info {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .order-items {
+            margin-top: 1rem;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-category {
+            font-size: 0.85rem;
+            color: #666;
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .item-quantity {
+            color: #666;
+            margin: 0 1rem;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #667eea;
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #667eea;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .tracking-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .tracking-info p {
+            color: #1976d2;
+            margin: 0.25rem 0;
+        }
+
+        .tracking-info strong {
+            color: #0d47a1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .action-buttons {
+                display: none;
+            }
+
+            .receipt-container {
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .receipt-section {
+                padding: 1rem;
+            }
+
+            .item-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .item-price {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <div class="logo">🛒</div>
+            <h1>NurArif Souvenir</h1>
+            <p>Pusat Souvenir Pernikahan Berkualitas</p>
+        </div>
+
+        <div class="thank-you">
+            <h2>✓ Terima Kasih Atas Pesanan Anda!</h2>
+            <p class="order-number">Nomor Pesanan: <strong id="orderNumber">#-</strong></p>
+            <p style="color: #666; margin-top: 1rem;">Pesanan Anda sedang diproses dan akan segera dikirim</p>
+        </div>
+
+        <div class="receipt-section">
+            <div class="tracking-info">
+                <p><strong>📦 Informasi Pengiriman:</strong></p>
+                <p>Pesanan Anda akan dikirim dalam <strong>1-3 hari kerja</strong></p>
+                <p>Estimasi tiba: <strong id="estimatedArrival">-</strong></p>
+                <p>Kami akan mengirimkan email dengan informasi tracking setelah pesanan dikirim</p>
+            </div>
+        </div>
+
+        <div class="receipt-section">
+            <div class="section-title">📍 Informasi Pengiriman</div>
+            <div class="shipping-info">
+                <div class="info-row">
+                    <span class="info-label">Nama Penerima:</span>
+                    <span class="info-value" id="shipName">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value" id="shipEmail">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Alamat:</span>
+                    <span class="info-value" id="shipAddress">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Kota:</span>
+                    <span class="info-value" id="shipCity">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Kode Pos:</span>
+                    <span class="info-value" id="shipPostal">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="receipt-section">
+            <div class="section-title">🛍️ Detail Pesanan</div>
+            <div class="order-items" id="orderItems">
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Biaya Pengiriman:</span>
+                    <span id="shippingCost">Rp 25.000</span>
+                </div>
+                <div class="summary-row">
+                    <span>Pajak (11%):</span>
+                    <span id="tax">Rp 0</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">Rp 0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="receipt-section">
+            <div class="section-title">💳 Metode Pembayaran</div>
+            <div class="billing-info">
+                <div class="info-row">
+                    <span class="info-label">Metode:</span>
+                    <span class="info-value" id="paymentMethod">Transfer Bank</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Status:</span>
+                    <span class="info-value" style="color: #2ecc71; font-weight: bold;">✓ Menunggu Pembayaran</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak Tanda Terima</button>
+            <a href="index.html" class="btn btn-primary">← Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <script>
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function getEstimatedArrival() {
+            const today = new Date();
+            const arrivalDate = new Date(today);
+            arrivalDate.setDate(today.getDate() + 3);
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return arrivalDate.toLocaleDateString('id-ID', options);
+        }
+
+        function loadOrderData() {
+            const orderData = localStorage.getItem('lastOrder');
+            
+            if (!orderData) {
+                alert('Tidak ada data pesanan. Anda akan diarahkan ke halaman utama.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const order = JSON.parse(orderData);
+
+            document.getElementById('orderNumber').textContent = order.orderNumber;
+            document.getElementById('estimatedArrival').textContent = getEstimatedArrival();
+            
+            document.getElementById('shipName').textContent = order.customer.name;
+            document.getElementById('shipEmail').textContent = order.customer.email;
+            document.getElementById('shipAddress').textContent = order.customer.address;
+            document.getElementById('shipCity').textContent = order.customer.city;
+            document.getElementById('shipPostal').textContent = order.customer.postal;
+
+            const orderItemsContainer = document.getElementById('orderItems');
+            orderItemsContainer.innerHTML = '';
+
+            order.items.forEach(item => {
+                const itemRow = document.createElement('div');
+                itemRow.className = 'item-row';
+                itemRow.innerHTML = `
+                    <div class="item-details">
+                        <div class="item-name">${item.icon} ${item.name}</div>
+                        <span class="item-category">${item.category}</span>
+                    </div>
+                    <div class="item-quantity">Jumlah: ${item.quantity}</div>
+                    <div class="item-price">${formatRupiah(item.price)} × ${item.quantity} = ${formatRupiah(item.price * item.quantity)}</div>
+                `;
+                orderItemsContainer.appendChild(itemRow);
+            });
+
+            const subtotal = order.subtotal;
+            const shippingCost = order.shippingCost;
+            const tax = Math.round(subtotal * 0.11);
+            const total = subtotal + shippingCost + tax;
+
+            document.getElementById('subtotal').textContent = formatRupiah(subtotal);
+            document.getElementById('shippingCost').textContent = formatRupiah(shippingCost);
+            document.getElementById('tax').textContent = formatRupiah(tax);
+            document.getElementById('total').textContent = formatRupiah(total);
+
+            // Tampilkan metode pembayaran jika ada
+            if (order.paymentMethod) {
+                document.getElementById('paymentMethod').textContent = order.paymentMethod;
+            }
+        }
+
+        window.addEventListener('load', loadOrderData);
+    </script>
+</body>
+</html>
